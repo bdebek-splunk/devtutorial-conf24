@@ -1,2 +1,2 @@
 splunktaucclib
-splunk-sdk
+splunk-sdk==1.7.3
