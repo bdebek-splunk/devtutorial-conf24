@@ -81,6 +81,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         echo "Creating HEC token..."
         HEC_TOKEN_OUTPUT=$(docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$my_cont_ip:8089  -disabled 0 -index log")
         HEC_TOKEN=$(echo "$HEC_TOKEN_OUTPUT" | grep -oP 'token=\K[^ ]+')
+        echo "Generated token: $HEC_TOKEN"
 
         echo -e "\033[92m Checking Splunk endpoints...\033[0m"
 
@@ -128,7 +129,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         # fi
         # echo -e "\033[92m Movies By Rating search found! \033[0m"
         echo -e "\033[92m Running unit tests... \033[0m"
-        ls -l $CONTAINER_NAME:$APPS_DIR/$APP_ROOT/default/
+        ls -l $CI_PROJECT_DIR/package/default/
         pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CI_PROJECT_DIR/package/ --splunk-data-generator=$CI_PROJECT_DIR/package/default/pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=$HEC_TOKEN
 
         echo "______________________________________________________________________"
