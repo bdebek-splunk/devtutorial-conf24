@@ -127,7 +127,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         # fi
         # echo -e "\033[92m Movies By Rating search found! \033[0m"
         echo -e "\033[92m Running unit tests... \033[0m"
-        pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/ --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
+        pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT/default/pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
 
         echo "______________________________________________________________________"
 
