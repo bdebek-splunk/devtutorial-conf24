@@ -7,13 +7,13 @@ from your_module_path.utilities import xml_event_parser
 # Initialize the logging
 LOGGER = logging.getLogger("pytest-splunk-addon")
 
-# Define the app path and other parameters
-app_path = "/path/to/your/app"
-tokenized_events = []  # Replace with your tokenized events
-field_bank = "/path/to/your/field_bank.json"
+# # Define the app path and other parameters
+# app_path = "/path/to/your/app"
+# tokenized_events = []  # Replace with your tokenized events
+# field_bank = "/path/to/your/field_bank.json"
 
-# Create an instance of FieldTestGenerator
-field_test_generator = FieldTestGenerator(app_path, tokenized_events, field_bank)
+# # Create an instance of FieldTestGenerator
+# field_test_generator = FieldTestGenerator(app_path, tokenized_events, field_bank)
 
 # Generate saved searches test cases
 saved_searches_tests = list(field_test_generator.generate_savedsearches_tests())
