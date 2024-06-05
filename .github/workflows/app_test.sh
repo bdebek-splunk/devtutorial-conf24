@@ -80,7 +80,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
     if [[ $checked != 1 ]]; then
         echo "Creating HEC token...
         "
-        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$my_cont_ip:8089 -description "this is a new token" -disabled 0 -index log
+        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$my_cont_ip:8089  -disabled 0 -index log"
 
         echo -e "\033[92m Checking Splunk endpoints...\033[0m"
 
