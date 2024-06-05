@@ -115,17 +115,19 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
 
         echo "______________________________________________________________________"
 
-        echo -e "\033[92m Checking if Movies By Rating saved search exists... \033[0m"
-        if ! docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches | table title'" | grep -q "Movies By Rating"; then
+        # echo -e "\033[92m Checking if Movies By Rating saved search exists... \033[0m"
+        # if ! docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches | table title'" | grep -q "Movies By Rating"; then
 
-            docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
+        #     docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
             
-            pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/ --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
+        #     pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/ --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
 
-            echo -e "\033[92m Movies By Rating not found! \033[0m"
-            exit 1
-        fi
-        echo -e "\033[92m Movies By Rating search found! \033[0m"
+        #     echo -e "\033[92m Movies By Rating not found! \033[0m"
+        #     exit 1
+        # fi
+        # echo -e "\033[92m Movies By Rating search found! \033[0m"
+        echo -e "\033[92m Running unit tests... \033[0m"
+        pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/ --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
 
         echo "______________________________________________________________________"
 
