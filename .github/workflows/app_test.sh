@@ -78,8 +78,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
     echo -e "\033[92m APP LIST: $appList\033[0m"
 
     if [[ $checked != 1 ]]; then
-        echo "Creating HEC token...
-        "
+        echo "Creating HEC token..."
         docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$my_cont_ip:8089  -disabled 0 -index log"
 
         echo -e "\033[92m Checking Splunk endpoints...\033[0m"
@@ -121,7 +120,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
 
             docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
             
-            pytest --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR --splunk-data-generator=pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
+            pytest --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR --splunk-data-generator=pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token -m  splunk_searchtime_fields
 
             echo -e "\033[92m Movies By Rating not found! \033[0m"
             exit 1
