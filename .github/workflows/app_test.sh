@@ -120,7 +120,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
 
             docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
             
-            pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
+            pytest -v $CI_PROJECT_DIR/tests/test_savedsearches.py --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR/$APP_ROOT --splunk-data-generator=$CI_PROJECT_DIR/tests/ --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
 
             echo -e "\033[92m Movies By Rating not found! \033[0m"
             exit 1
