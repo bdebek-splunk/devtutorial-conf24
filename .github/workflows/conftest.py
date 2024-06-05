@@ -1,4 +1,4 @@
-from pytest_splunk_addon.standard_lib.addon_basic import Basic
-class Test_App(Basic):
-    def empty_method():
+from standard_lib.app_test_generator import AppTestGenerator
+class Test_App(AppTestGenerator):
+    def generate_tests(splunk_searchtime_fields_savedsearches):
         pass
