@@ -76,6 +76,11 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
     echo -e "\033[92m APP LIST: $appList\033[0m"
 
     if [[ $checked != 1 ]]; then
+        echo "Restarting Splunk..."
+        
+        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk stop"
+        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk start"
+
         echo -e "\033[92m Checking Splunk endpoints...\033[0m"
 
         echo -e "\033[92m Looking for $APP_ROOT app...\033[0m"
@@ -114,7 +119,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
             docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
 
             echo -e "\033[92m Movies By Rating not found! \033[0m"
-            # exit 1
+            exit 1
         fi
         echo -e "\033[92m Movies By Rating search found! \033[0m"
 
