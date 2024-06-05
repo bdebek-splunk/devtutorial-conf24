@@ -48,6 +48,7 @@ docker exec -i $CONTAINER_NAME ls -l $APPS_DIR/$APP_ROOT/
 # docker exec -i $CONTAINER_NAME cat $APPS_DIR/$APP_ROOT/default/commands.conf
 
 echo "Installing python packages"
+pip install pytest-splunk-addon
 
 echo "My splunk instance host: $my_cont_ip:8000"
 
@@ -60,6 +61,7 @@ docker ps
 loopCounter=30
 mainReady=0
 checked=0
+errors=0
 
 while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
   ((loopCounter--))
@@ -76,10 +78,9 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
     echo -e "\033[92m APP LIST: $appList\033[0m"
 
     if [[ $checked != 1 ]]; then
-        echo "Restarting Splunk..."
-        
-        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk stop"
-        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk start"
+        echo "Creating HEC token...
+        "
+        docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$my_cont_ip:8089 -description "this is a new token" -disabled 0 -index log
 
         echo -e "\033[92m Checking Splunk endpoints...\033[0m"
 
@@ -91,7 +92,8 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         echo -e "\033[92m Checking if app is installed... \033[0m"
         if ! curl -k -u $USER:$PASSWORD -i -q https://$my_cont_ip:8089/services/apps/local/?search=$APP_ROOT | grep -q $APP_ROOT; then
           echo "App $APP_ROOT not found in local apps!"
-          exit 1
+          # exit 1
+          ((errors++))
         fi
         echo -e "\033[92m $APP_ROOT found! \033[0m"
 
@@ -106,7 +108,8 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
 
         if ! echo "$customSearch" | grep -q "1001"; then
             echo -e "\033[92m Custom search command does not work correctly! \033[0m"
-            exit 1
+            # exit 1
+            ((errors++))
         fi
 
         echo -e "\033[92m Custom search command works correctly! \033[0m"
@@ -117,6 +120,8 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         if ! docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches | table title'" | grep -q "Movies By Rating"; then
 
             docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk search '| rest /servicesNS/-/-/saved/searches| table title'" | grep -q "Movies By Rating"
+            
+            pytest --splunk-type=external --splunk-app=$CONTAINER_NAME:$APPS_DIR --splunk-data-generator=pytest-splunk-addon-data.conf --splunk-host=$my_cont_ip --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=new-token
 
             echo -e "\033[92m Movies By Rating not found! \033[0m"
             exit 1
@@ -129,6 +134,9 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         curl -k -u $USER:$PASSWORD -i -q https://$my_cont_ip:8089/services/apps/local/$APP_ROOT
 
         checked=1
+        if $errors>0; then
+        exit 1
+        fi
     fi
     mainReady=1
   fi
