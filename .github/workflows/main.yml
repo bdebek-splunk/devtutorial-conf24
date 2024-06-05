@@ -111,6 +111,24 @@ jobs:
           chmod +x .github/workflows/app_test.sh
           .github/workflows/app_test.sh 9.0
 
+  test-latest:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: my-package
+          path: app-dir/
+
+      - name: Test On Splunk latest
+        run: |
+          chmod +x .github/workflows/app_test.sh
+          .github/workflows/app_test.sh latest
+
   test-v8:
     needs: build
     runs-on: ubuntu-latest
