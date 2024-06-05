@@ -1,4 +1,2 @@
 splunktaucclib
 splunk-sdk
-solnlib
-splunklib==1.7.3
