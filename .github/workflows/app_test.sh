@@ -46,7 +46,9 @@ docker exec -i $CONTAINER_NAME ls -l $APPS_DIR/$APP_ROOT/
 # INSTALLING pytest-splunk-addon FOR FUTURE KNOWLEDGE OBJECT TESTING
 echo "Installing python packages"
 pip install pytest-splunk-addon
+
 pip install pytest-html
+
 
 echo "My splunk instance host: $CONTAINER_IP:8000"
 
@@ -76,11 +78,16 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
     echo -e "\033[92m APP LIST: $appList\033[0m"
 
     if [[ $checked != 1 ]]; then
+
         # WHEN CONTAINER IS UP WE CREATE HEC TOKEN FOR TESTING PURPOSES - SENDING DUMMY DATA TO SPLUNK
+
+
         echo "Creating HEC token..."
         HEC_TOKEN_OUTPUT=$(docker exec -i -u splunk $CONTAINER_NAME bash -c "SPLUNK_USERNAME=$USER SPLUNK_PASSWORD=$PASSWORD /opt/splunk/bin/splunk http-event-collector create new-token -uri https://$CONTAINER_IP:8089  -disabled 0 -index log")
         HEC_TOKEN=$(echo "$HEC_TOKEN_OUTPUT" | grep -oP 'token=\K[^ ]+')
         echo "Generated token: $HEC_TOKEN"
+
+
 
         echo -e "\033[92m Running unit tests...\033[0m"
 
@@ -112,6 +119,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         echo -e "\033[92m Custom search command works correctly! \033[0m"
 
         echo "______________________________________________________________________"
+
 
         # RUNNING KNOWLEDGE OBJECTS TESTS USING PYTEST AND GENERATED DUMMY DATA
         echo -e "\033[92m Running Knowledge Object Tests... \033[0m"
