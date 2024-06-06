@@ -46,6 +46,7 @@ docker exec -i $CONTAINER_NAME ls -l $APPS_DIR/$APP_ROOT/
 # INSTALLING pytest-splunk-addon FOR FUTURE KNOWLEDGE OBJECT TESTING
 echo "Installing python packages"
 pip install pytest-splunk-addon
+pip install pytest-html
 
 echo "My splunk instance host: $CONTAINER_IP:8000"
 
