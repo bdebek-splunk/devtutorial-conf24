@@ -19,7 +19,7 @@ jobs:
       - name: Create subfolder
         run: mkdir my-package
 
-      - name: Install UCC and Slim
+      - name: Install UCC
         run: |
           pip install splunk-add-on-ucc-framework
           pip install splunk-packaging-toolkit
@@ -107,6 +107,11 @@ jobs:
           name: my-package
           path: app-dir/
 
+      - name: Instal packages
+        run: |
+          sudo apt update -qq
+          sudo apt-get install -y jq
+
       - name: Test On Splunk 9.0
         run: |
           chmod +x .github/workflows/app_test.sh
@@ -126,6 +131,11 @@ jobs:
         with:
           name: my-package
           path: app-dir/
+
+      - name: Instal packages
+        run: |
+          sudo apt update -qq
+          sudo apt-get install -y jq
 
       - name: Test On Splunk latest
         run: |
