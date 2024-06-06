@@ -142,7 +142,7 @@ jobs:
 
   release:
     if: startsWith(github.event.ref, 'refs/tags/v')
-    needs: [test-v9-2-1, test-v9, test-latest, run-appinspect]
+    needs: [test-v9-2-1, test-v9, run-appinspect]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
