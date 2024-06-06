@@ -96,7 +96,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      SPLUNK_VERSION: 9.0
+      SPLUNK_VERSION: "9.0"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -116,7 +116,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      SPLUNK_VERSION: 9.2.1
+      SPLUNK_VERSION: "9.2.1"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
