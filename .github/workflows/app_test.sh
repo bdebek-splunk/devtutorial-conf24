@@ -115,7 +115,9 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
         # RUNNING KNOWLEDGE OBJECTS TESTS USING PYTEST AND GENERATED DUMMY DATA
         echo -e "\033[92m Running Knowledge Object Tests... \033[0m"
 
-        pytest -v $CI_PROJECT_DIR/tests/knowledge/test_savedsearches.py --splunk-type=external --splunk-app=$CI_PROJECT_DIR/package/ --splunk-data-generator=$CI_PROJECT_DIR/tests/knowledge/ --splunk-host=$CONTAINER_IP --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=$HEC_TOKEN
+        set -e # fail the job if pytest resutls with failures
+
+        pytest -v $CI_PROJECT_DIR/tests/knowledge/test_savedsearches.py --splunk-type=external --splunk-app=$CI_PROJECT_DIR/package/ --splunk-data-generator=$CI_PROJECT_DIR/tests/knowledge/ --splunk-host=$CONTAINER_IP --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=$HEC_TOKEN --html=pytest-report.html --self-contained-html
 
         echo "______________________________________________________________________"
 
