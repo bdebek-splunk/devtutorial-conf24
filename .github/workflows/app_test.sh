@@ -118,7 +118,7 @@ while [[ $loopCounter != 0 && $mainReady != 1 ]]; do
 
         set -e # fail the job if pytest resutls with failures
 
-        pytest -v $CI_PROJECT_DIR/tests/knowledge/test_savedsearches.py --splunk-type=external --splunk-app=$CI_PROJECT_DIR/package/ --splunk-data-generator=$CI_PROJECT_DIR/tests/knowledge/ --splunk-host=$CONTAINER_IP --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=$HEC_TOKEN --html=pytest-report.html --self-contained-html
+        pytest -v $CI_PROJECT_DIR/tests/knowledge/test_savedsearches.py --splunk-type=external --splunk-app=$CI_PROJECT_DIR/package/ --splunk-data-generator=$CI_PROJECT_DIR/tests/knowledge/ --splunk-host=$CONTAINER_IP --splunk-port=8089 --splunk-user=$USER --splunk-password=$PASSWORD --splunk-hec-token=$HEC_TOKEN --html=$CI_PROJECT_DIR/pytest-report.html --self-contained-html
 
         echo "______________________________________________________________________"
 
