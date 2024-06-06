@@ -3,7 +3,7 @@
 #set -x
 
 # ENVIROMENT VARIABLES
-APP_ROOT=$(jq -r '.meta.name' CI_PROJECT_DIR/globalConfig.json)
+APP_ROOT=$(jq -r '.meta.name' ./globalConfig.json)
 APPS_DIR="/opt/splunk/etc/apps"
 USER="admin"
 PASSWORD="password"
