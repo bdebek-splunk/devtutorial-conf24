@@ -93,7 +93,7 @@ jobs:
   #         path: AppInspect_response.html
 
   run-reusable-appinspect-api:
-    uses: bdebek-splunk/reusable-appinspect-api/.github/workflows/main.yml
+    uses: bdebek-splunk/reusable-appinspect-api/.github/workflows/main.yml@main
     needs: build
     secrets: inherit
 
