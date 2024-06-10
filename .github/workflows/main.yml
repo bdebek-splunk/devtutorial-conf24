@@ -95,6 +95,7 @@ jobs:
   run-reusable-appinspect-api:
     uses: bdebek-splunk/reusable-appinspect-api/.github/workflows/main.yml@main
     needs: build
+    secrets: inherit
 
   test-v9:
     needs: build
