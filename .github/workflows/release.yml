@@ -8,5 +8,5 @@ on:
 jobs:
   run-reusable-build-test-release:
     uses: bdebek-splunk/reusable-build-test-release/.github/workflows/main.yml@main
-    with: 
+    secrets: 
       GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
