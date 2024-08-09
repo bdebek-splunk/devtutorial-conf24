@@ -1,11 +1,15 @@
-name: Release workflow
+name: release
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+      - test
+    tags:
+      - 'v*'
 
 jobs:
-  call-reusable-workflow:
-    uses: bdebek-splunk/reusable-build-test-release/.github/workflows/reusable-test-build-release.yml@main
-    secrets:
-      # Inherit secrets from the calling repository.
-      inherit: true
+  run-reusable-build-test-release:
+    uses: bdebek-splunk/reusable-build-test-release/.github/workflows/main.yml@main
+    secrets: inherit
