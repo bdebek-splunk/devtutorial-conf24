@@ -21,7 +21,9 @@ jobs:
           pip install splunk-packaging-toolkit
 
       - name: Build an app using UCC
-        run: ucc-gen build
+        run: |
+          version = $(${{ github.ref_name }} | cut -c 2-)
+          ucc-gen build --ta-version $version
 
       - name: Create tmp folder
         run: mkdir app-dir
