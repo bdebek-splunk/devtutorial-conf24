@@ -53,4 +53,4 @@ jobs:
         GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
       run: |
         package_name=$(ls -1 *gz | xargs basename)
-        gh release create ${{ github.ref_name }} $package_name -F CHANGELOG.md
+        gh release create ${{ github.ref_name }} $package_name -F release_notes/${{ github.ref_name }}.md
