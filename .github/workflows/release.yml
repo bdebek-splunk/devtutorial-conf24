@@ -22,7 +22,7 @@ jobs:
 
       - name: Build an app using UCC
         run: |
-          version=${{ github.ref_name }} | cut -c 2-
+          version=$(echo ${{ github.ref_name }} | cut -c 2-)
           ucc-gen build --ta-version $version
 
       - name: Create tmp folder
